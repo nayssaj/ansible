@@ -21,11 +21,10 @@
   register: bashrc
 
 - name: Backup old dotfiles
-  copy:
-    src: '{{ ansible_env.HOME }}/.bashrc'
-    dest: '{{ ansible_env.HOME }}/.dotfiles_backup'
+  command: mv {{ansible_env.HOME}}/.bashrc {{ansible_env.HOME/.dotfiles_backup}}
+  #    src: '{{ ansible_env.HOME }}/.bashrc'
+  #  dest: '{{ ansible_env.HOME }}/.dotfiles_backup'
   when: bashrc.stat.exists
-  notify: cleanup
 
 - name: Checkout content
   shell:
