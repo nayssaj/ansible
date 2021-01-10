@@ -24,7 +24,7 @@
   copy:
     src: '{{ ansible_env.HOME }}/.bashrc'
     dest: '{{ ansible_env.HOME }}/.dotfiles_backup'
-  when: not bashrc.stat.exists
+  when: bashrc.stat.exists
   notify: cleanup
 
 - name: Checkout content
