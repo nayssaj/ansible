@@ -1,5 +1,30 @@
 - hosts: localhost
   become: true
   tasks:
-    - name: Install tmux
-      yum: name=tmux
+    - debug: msg="{{ ansible_env.HOME}}"
+    - name: Install tmux on RHEL based distros
+      yum:
+        name: tmux
+        state: present
+        update_cache: true
+      when: ansible_os_family == 'RedHat'
+
+    - name: Install tmux on Debian based distros
+      apt:
+        name: tmux
+        state: present
+        update_cache: true
+      when: ansible_os_family == 'Debian'
+
+    - name: Install neovim
+      yum:
+        name: neovim
+        state: present
+
+    - name: Install git
+      package:
+        name: git
+        state: present
+
+    - name: Create dotfile repository
+      command: git init --bare --shared {{ ansible_env.HOME}}/.cfg

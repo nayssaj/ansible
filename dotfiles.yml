@@ -1,0 +1,4 @@
+- hosts: localhost
+  tasks:
+    - name: Create dotfile repository
+      command: git init --bare --shared {{ ansible_env.HOME}}/.cfg
