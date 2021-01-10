@@ -4,11 +4,28 @@
     line: '.dotfiles'
     create: yes
 
-- name: Clone dotfiles
+- name: Create bare dotfile repo
   git:
     repo: 'https://github.com/nayssaj/dotfiles.git'
     dest: '{{ ansible_env.HOME }}/.dotfiles'
     bare: yes
+
+- name: Create backup directory
+  file:
+    path: '{{ ansible_env.HOME }}/.dotfiles_backup'
+    state: directory
+
+- name: Check bashrc existance
+  stat:
+    path: '{{ ansible_env.HOME }}/.bashrc'
+  register: bashrc
+
+- name: Backup old dotfiles
+  copy:
+    src: '{{ ansible_env.HOME }}/.bashrc'
+    dest: '{{ ansible_env.HOME }}/.dotfiles_backup'
+  when: not bashrc.stat.exists
+  notify: cleanup
 
 - name: Checkout content
   shell:

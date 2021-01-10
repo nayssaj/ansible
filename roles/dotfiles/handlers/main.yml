@@ -1,0 +1,6 @@
+---
+- name: Remove bashrc
+  file:
+    path: '{{ ansible_env.HOME }}/.bashrc'
+    state: absent
+  listen: cleanup
